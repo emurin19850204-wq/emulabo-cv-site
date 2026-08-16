@@ -8,7 +8,7 @@ export type CmsFaq = { question: string; answer: string };
 export type CmsContent = {
   contactUrl: string;
   hero: { eyebrow: string; title: string; description: string; emphasis: string; note: string; align: TextAlign };
-  assets: { heroImageUrl: string; profileImageUrl: string; caseImageUrl: string };
+  assets: { heroImageUrl: string; profileImageUrl: string; caseImageUrl: string; consultationImageUrl: string; workshopImageUrl: string; operationsImageUrl: string };
   signals: CmsSignal[];
   services: CmsService[];
   caseStudy: { title: string; challenge: string; action: string; outcome: string; scope: string };
@@ -31,6 +31,9 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
     heroImageUrl: "/manus-storage/emulabo-hero-education-system_30d64fc5.jpg",
     profileImageUrl: "/manus-storage/emulabo-operations-brief_316f1942.jpg",
     caseImageUrl: "/manus-storage/emulabo-knowledge-structure_3d50d57d.jpg",
+    consultationImageUrl: "/manus-storage/emulabo-consultation-reference_ee3b7833.jpg",
+    workshopImageUrl: "/manus-storage/emulabo-training-workshop_e35ee322.jpg",
+    operationsImageUrl: "/manus-storage/emulabo-operations-team_9aae9c22.jpg",
   },
   signals: [
     { number: "15", unit: "YEARS", label: "大手フィットネスクラブ勤務" },
