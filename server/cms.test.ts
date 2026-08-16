@@ -20,6 +20,16 @@ describe("CMS content parsing", () => {
     expect(result.faqs).toHaveLength(DEFAULT_SITE_CONTENT.faqs.length);
   });
 
+  it("adds safe left alignment defaults to CMS documents saved before the alignment feature", () => {
+    const result = parseCmsContent(JSON.stringify({
+      hero: { title: "既存のヒーロー" },
+      finalCta: { title: "既存のCTA" },
+    }));
+
+    expect(result.hero.align).toBe("left");
+    expect(result.finalCta.align).toBe("left");
+  });
+
   it("safely ignores malformed persisted JSON", () => {
     expect(parseCmsContent("not-json")).toEqual(DEFAULT_SITE_CONTENT);
   });

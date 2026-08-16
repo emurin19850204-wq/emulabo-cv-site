@@ -15,6 +15,13 @@
       "when": 1786787328752,
       "tag": "0001_chilly_vulture",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1786790781666,
+      "tag": "0002_brainy_killmonger",
+      "breakpoints": true
     }
   ]
 }

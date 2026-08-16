@@ -9,7 +9,7 @@ import { storageCreatePresignedUpload } from "./storage";
 
 const pagePayload = z.object({
   slug: z.string().trim().regex(/^[a-z0-9-]+$/).min(2).max(120),
-  title: z.string().trim().min(1).max(220), eyebrow: z.string().max(120), summary: z.string().max(5_000), body: z.string().max(50_000), imageUrl: z.string().max(2_000), imageAlt: z.string().max(220), ctaLabel: z.string().max(120), ctaUrl: z.string().max(2_000), navLabel: z.string().max(120), showInNav: z.boolean(), isPublished: z.boolean(), sortOrder: z.number().int().min(0).max(10_000),
+  title: z.string().trim().min(1).max(220), eyebrow: z.string().max(120), summary: z.string().max(5_000), body: z.string().max(50_000), imageUrl: z.string().max(2_000), imageAlt: z.string().max(220), ctaLabel: z.string().max(120), ctaUrl: z.string().max(2_000), navLabel: z.string().max(120), headerAlign: z.enum(["left", "center", "right"]), bodyAlign: z.enum(["left", "center", "right"]), ctaAlign: z.enum(["left", "center", "right"]), showInNav: z.boolean(), isPublished: z.boolean(), sortOrder: z.number().int().min(0).max(10_000),
 });
 const linkPayload = z.object({ label: z.string().trim().min(1).max(120), url: z.string().trim().min(1).max(2_000), location: z.enum(["header", "footer"]), isExternal: z.boolean(), isVisible: z.boolean(), sortOrder: z.number().int().min(0).max(10_000) });
 

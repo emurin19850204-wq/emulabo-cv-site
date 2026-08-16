@@ -1,19 +1,20 @@
 export const CMS_CONTENT_SLUG = "emulabo-site";
 
+export type TextAlign = "left" | "center" | "right";
 export type CmsSignal = { number: string; unit: string; label: string };
 export type CmsService = { number: string; title: string; lead: string; text: string; examples: string[] };
 export type CmsFaq = { question: string; answer: string };
 
 export type CmsContent = {
   contactUrl: string;
-  hero: { eyebrow: string; title: string; description: string; emphasis: string; note: string };
+  hero: { eyebrow: string; title: string; description: string; emphasis: string; note: string; align: TextAlign };
   assets: { heroImageUrl: string; profileImageUrl: string; caseImageUrl: string };
   signals: CmsSignal[];
   services: CmsService[];
   caseStudy: { title: string; challenge: string; action: string; outcome: string; scope: string };
   profile: { name: string; heading: string; quote: string; bio: string; credentials: string[] };
   faqs: CmsFaq[];
-  finalCta: { title: string; text: string; note: string };
+  finalCta: { title: string; text: string; note: string; align: TextAlign };
 };
 
 export const DEFAULT_SITE_CONTENT: CmsContent = {
@@ -24,6 +25,7 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
     description: "研修を作るだけではなく、",
     emphasis: "教育設計・評価制度・現場運用・AI活用まで一気通貫で設計。",
     note: "課題が整理できていない段階でも構いません｜オンライン30分",
+    align: "left",
   },
   assets: {
     heroImageUrl: "/manus-storage/emulabo-hero-education-system_30d64fc5.jpg",
@@ -52,7 +54,7 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
     { question: "オンライン対応は可能ですか？", answer: "可能です。初回の無料相談はオンラインで実施します。" },
     { question: "相談したら契約する必要がありますか？", answer: "無料相談の時点で契約を前提とするものではありません。現状と方向性を整理する場としてご利用ください。" },
   ],
-  finalCta: { title: "「何から変えればいいか」\nから、一緒に整理します。", text: "育成、評価制度、現場運用、AI活用。問題が一つではないからこそ、最初から解決策を決める必要はありません。まず現在の状況を聞かせてください。", note: "オンライン30分｜相談無料" },
+  finalCta: { title: "「何から変えればいいか」\nから、一緒に整理します。", text: "育成、評価制度、現場運用、AI活用。問題が一つではないからこそ、最初から解決策を決める必要はありません。まず現在の状況を聞かせてください。", note: "オンライン30分｜相談無料", align: "left" },
 };
 
 export function parseCmsContent(raw: string | null | undefined): CmsContent {

@@ -1,3 +1,5 @@
+import type { TextAlign } from "./cms";
+
 export type SitePagePayload = {
   slug: string;
   title: string;
@@ -9,6 +11,9 @@ export type SitePagePayload = {
   ctaLabel: string;
   ctaUrl: string;
   navLabel: string;
+  headerAlign: TextAlign;
+  bodyAlign: TextAlign;
+  ctaAlign: TextAlign;
   showInNav: boolean;
   isPublished: boolean;
   sortOrder: number;
@@ -34,6 +39,9 @@ export const EMPTY_PAGE: SitePagePayload = {
   ctaLabel: "無料オンライン相談を予約する",
   ctaUrl: "https://emulabo.com/contact",
   navLabel: "新しいページ",
+  headerAlign: "left",
+  bodyAlign: "left",
+  ctaAlign: "left",
   showInNav: false,
   isPublished: false,
   sortOrder: 100,
