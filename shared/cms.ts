@@ -32,8 +32,8 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
     profileImageUrl: "/manus-storage/emulabo-operations-brief_316f1942.jpg",
     caseImageUrl: "/manus-storage/emulabo-knowledge-structure_3d50d57d.jpg",
     consultationImageUrl: "/manus-storage/emulabo-consultation-reference_ee3b7833.jpg",
-    workshopImageUrl: "/manus-storage/emulabo-training-workshop_e35ee322.jpg",
-    operationsImageUrl: "/manus-storage/emulabo-operations-team_9aae9c22.jpg",
+    workshopImageUrl: "/manus-storage/emulabo-training-workshop-v2_c473faf8.jpg",
+    operationsImageUrl: "/manus-storage/emulabo-operations-team-v2_27fe7fc4.jpg",
   },
   signals: [
     { number: "15", unit: "YEARS", label: "大手フィットネスクラブ勤務" },
