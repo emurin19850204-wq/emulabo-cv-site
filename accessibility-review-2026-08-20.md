@@ -43,3 +43,45 @@ FAQとモバイルメニューの操作要素はbuttonで、FAQには `aria-expa
 ## 主要CTAのコントラスト確認
 
 主要CTAは前景色`rgb(7, 25, 46)`、背景色`rgb(91, 169, 217)`で、計算したコントラスト比は6.84:1だった。通常テキストのAA基準4.5:1、および大きなテキストのAA基準3:1を満たすことを確認した。ヒーロー見出しとヘッダーは白文字で、暗い画像オーバーレイ上に配置されている。
+
+## モバイル幅の表示確認
+
+390×844pxの表示で、ヘッダー右上のメニューボタン、ヒーローの主CTA、画面下部の固定相談CTAが重なりなく表示されることを確認した。本文・主CTA・固定CTAの可読性も保持されている。
+
+## モバイルメニューのキーボード操作
+
+モバイル表示時と同じ表示条件で、メニューボタンへフォーカスを移せることを確認した。フォーカス時に`aria-controls="mobile-menu-panel"`と閉じた状態の`aria-expanded="false"`が取得できた。
+
+メニューボタンへフォーカスした状態でEnterキーを押し、フォーカスを維持したまま`aria-expanded="true"`、`aria-label="メニューを閉じる"`、`mobile-menu--open`が反映されることを確認した。キーボードだけでモバイルメニューを開ける。
+
+同じフォーカス位置で再度Enterキーを押すと、メニューは閉じ、`aria-expanded="false"`、`aria-label="メニューを開く"`、閉じたパネルクラスへ戻った。検証用に一時追加した表示スタイルは削除し、通常の画面状態へ戻した。
+
+開いたモバイルメニューでTabを1回押すと、最初のリンク「法人向け」へフォーカスが移った。対象は`/corporate?cta_audience=corporate&cta_action=learn_more&cta_placement=mobile_nav`であり、ブラウザの可視フォーカス（`outline: auto`）も確認した。
+
+## 法人向けページの主要フォーカス対象
+
+`/corporate` の読み込み完了後、ブランドリンク、目的別の無料オンライン相談CTA、フッターのトップへ戻るリンクが公開状態で表示されることを確認した。次にTab／Shift+Tabで開始位置と到達順を確認する。
+
+法人向けページでは、Tab開始時にブランドリンク「EMULABO」へ可視フォーカスが移り、次のTabで目的別の「無料オンライン相談を予約する」CTAへ移ることを確認した。CTAのURLには`cta_audience=corporate`、`cta_action=consultation`、`cta_placement=corporate_page`が引き継がれ、フォーカス表示は`outline: auto`だった。
+
+法人向けCTAにフォーカスがある状態でShift+Tabを押すと、ブランドリンク「EMULABO」へ戻った。戻り先は`/`であり、可視フォーカス（`outline: auto`）を確認した。
+
+## 個人向けページの主要フォーカス対象
+
+`/personal` の読み込み完了後、ブランドリンク、目的別の初回体験CTA、フッターのトップへ戻るリンクが公開状態で表示されることを確認した。次にTab／Shift+Tabで開始位置と到達順を確認する。
+
+個人向けページでは、Tab開始時にブランドリンク「EMULABO」へ可視フォーカスが移った。戻り先は`/`であり、フォーカス表示は`outline: auto`だった。
+
+個人向けページでは、ブランドリンクの次のTabで「初回体験を申し込む」CTAへ可視フォーカスが移った。CTAのURLには`cta_audience=personal`、`cta_action=trial`、`cta_placement=personal_page`が引き継がれ、フォーカス表示は`outline: auto`だった。
+
+個人向け初回体験CTAにフォーカスがある状態でShift+Tabを押すと、ブランドリンク「EMULABO」へ戻った。戻り先は`/`であり、可視フォーカス（`outline: auto`）を確認した。
+
+## 公開トップの主要フォーカス遷移
+
+公開トップでは、Tab開始時にスキップリンク「本文へ移動」へ可視フォーカスが移った。本文へ直接移動するリンクが最初に到達するため、キーボード利用者は繰り返しナビゲーションを飛ばせる。
+
+次のTabでブランドリンク「EMULABO」へ移った。リンク先は`#top`で、可視フォーカス（`outline: auto`）を確認した。
+
+さらにTabを押すと、主要ナビゲーションの最初のリンク「法人向け」へ可視フォーカスが移った。リンク先は`/corporate?cta_audience=corporate&cta_action=learn_more&cta_placement=header_nav`であり、フォーカス表示は`outline: auto`だった。
+
+主要ナビゲーションの「法人向け」にフォーカスがある状態でShift+Tabを押すと、ブランドリンク「EMULABO」へ戻った。リンク先は`#top`で、可視フォーカス（`outline: auto`）を確認した。
