@@ -85,3 +85,7 @@ FAQとモバイルメニューの操作要素はbuttonで、FAQには `aria-expa
 さらにTabを押すと、主要ナビゲーションの最初のリンク「法人向け」へ可視フォーカスが移った。リンク先は`/corporate?cta_audience=corporate&cta_action=learn_more&cta_placement=header_nav`であり、フォーカス表示は`outline: auto`だった。
 
 主要ナビゲーションの「法人向け」にフォーカスがある状態でShift+Tabを押すと、ブランドリンク「EMULABO」へ戻った。リンク先は`#top`で、可視フォーカス（`outline: auto`）を確認した。
+
+## 390px実モバイル幅でのキーボード受入
+
+Chromiumを390×844pxで起動し、実際のキーボード入力で受入確認を行った。Tab順は「本文へ移動」→「EMULABO」→「メニューを開く」であり、閉じたメニューは`inert=true`でTab順から除外されていた。Enterでメニューが開き、`aria-expanded=true`・`inert=false`へ変わった後のTabで最初の「法人向け」リンクへ移った。Shift+Tabでメニューボタンへ戻り、Spaceでメニューが閉じ、`aria-expanded=false`・`inert=true`へ復帰した。すべての受入ステップは成功した。
