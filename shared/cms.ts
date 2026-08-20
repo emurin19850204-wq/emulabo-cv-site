@@ -4,11 +4,15 @@ export type TextAlign = "left" | "center" | "right";
 export type CmsSignal = { number: string; unit: string; label: string };
 export type CmsService = { number: string; title: string; lead: string; text: string; examples: string[] };
 export type CmsFaq = { question: string; answer: string };
+export type CmsAudience = { eyebrow: string; title: string; text: string; href: string; ctaLabel: string };
+export type CmsResource = { label: string; url: string };
 
 export type CmsContent = {
   contactUrl: string;
   hero: { eyebrow: string; title: string; description: string; emphasis: string; note: string; align: TextAlign };
   assets: { heroImageUrl: string; profileImageUrl: string; caseImageUrl: string; consultationImageUrl: string; workshopImageUrl: string; operationsImageUrl: string };
+  audiences: { corporate: CmsAudience; personal: CmsAudience };
+  resources: { corporate: CmsResource; personal: CmsResource };
   signals: CmsSignal[];
   services: CmsService[];
   caseStudy: { title: string; challenge: string; action: string; outcome: string; scope: string };
@@ -34,6 +38,29 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
     consultationImageUrl: "/manus-storage/emulabo-consultation-reference_ee3b7833.jpg",
     workshopImageUrl: "/manus-storage/emulabo-training-workshop-v2_c473faf8.jpg",
     operationsImageUrl: "/manus-storage/emulabo-operations-team-v2_27fe7fc4.jpg",
+  },
+  audiences: {
+    corporate: {
+      eyebrow: "FOR CORPORATIONS",
+      title: "法人のお客様",
+      text: "研修、育成制度、現場運用、AI活用を組織の仕組みに変えたい方へ。",
+      href: "/corporate",
+      ctaLabel: "法人向け支援を見る",
+    },
+    personal: {
+      eyebrow: "FOR PERSONAL",
+      title: "個人のお客様",
+      text: "続けられる運動習慣や、身体の悩みを根拠と手順から整理したい方へ。",
+      href: "/personal",
+      ctaLabel: "初回体験の内容を見る",
+    },
+  },
+  resources: {
+    corporate: {
+      label: "法人向けサービス資料をダウンロード",
+      url: "https://storage.googleapis.com/studio-design-asset-files/projects/moWvBGELW6/s-1x1_6c62aa82-f1aa-4bd1-8f62-1d89053651b3.pdf",
+    },
+    personal: { label: "初回体験を申し込む", url: "https://emulabo.com/contact" },
   },
   signals: [
     { number: "15", unit: "YEARS", label: "大手フィットネスクラブ勤務" },
@@ -69,6 +96,14 @@ export function parseCmsContent(raw: string | null | undefined): CmsContent {
       ...candidate,
       hero: { ...DEFAULT_SITE_CONTENT.hero, ...candidate.hero },
       assets: { ...DEFAULT_SITE_CONTENT.assets, ...candidate.assets },
+      audiences: {
+        corporate: { ...DEFAULT_SITE_CONTENT.audiences.corporate, ...candidate.audiences?.corporate },
+        personal: { ...DEFAULT_SITE_CONTENT.audiences.personal, ...candidate.audiences?.personal },
+      },
+      resources: {
+        corporate: { ...DEFAULT_SITE_CONTENT.resources.corporate, ...candidate.resources?.corporate },
+        personal: { ...DEFAULT_SITE_CONTENT.resources.personal, ...candidate.resources?.personal },
+      },
       signals: candidate.signals?.length ? candidate.signals : DEFAULT_SITE_CONTENT.signals,
       services: candidate.services?.length ? candidate.services : DEFAULT_SITE_CONTENT.services,
       caseStudy: { ...DEFAULT_SITE_CONTENT.caseStudy, ...candidate.caseStudy },

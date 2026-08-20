@@ -6,10 +6,15 @@
 import { ArrowLeft, ArrowRight, MoveUpRight } from "lucide-react";
 import { useParams } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { DEFAULT_SITE_CONTENT } from "@shared/cms";
 
 export default function ContentPage() {
   const params = useParams<{ slug: string }>();
   const { data: page, isLoading } = trpc.sitePages.publicBySlug.useQuery({ slug: params.slug });
+  const { data: siteContent } = trpc.siteContent.public.useQuery(undefined, { staleTime: 60_000 });
+  const content = siteContent ?? DEFAULT_SITE_CONTENT;
+  const isPersonalPage = params.slug === content.audiences.personal.href.replace(/^\//, "");
+  const cta = isPersonalPage ? content.resources.personal : { label: page?.ctaLabel ?? "", url: page?.ctaUrl ?? "" };
 
   if (isLoading) return <main className="min-h-screen bg-[#f5f3ee] px-6 pt-32 text-[#102845]"><div className="mx-auto max-w-5xl animate-pulse"><div className="h-3 w-32 bg-slate-200" /><div className="mt-7 h-20 max-w-3xl bg-slate-200" /></div></main>;
   if (!page) return <main className="flex min-h-screen items-center justify-center bg-[#f5f3ee] px-6 text-center text-[#102845]"><div><p className="font-mono text-xs tracking-[.18em] text-sky-700">404 / PAGE NOT FOUND</p><h1 className="mt-5 text-4xl font-bold tracking-[-.06em]">ページが見つかりません。</h1><a href="/" className="mt-8 inline-flex items-center gap-2 border-b border-current pb-2 text-sm font-bold">トップページへ戻る <ArrowLeft size={16} /></a></div></main>;
@@ -26,7 +31,7 @@ export default function ContentPage() {
       <p className="font-mono text-xs tracking-[.16em] text-slate-500">EMULABO / INSIGHT</p>
       <div className="space-y-7 text-[15px] leading-8 text-slate-700" style={{ textAlign: page.bodyAlign }}>
         {page.body.split(/\n\s*\n/).map((paragraph, index) => <p className="whitespace-pre-line" key={`${paragraph}-${index}`}>{paragraph}</p>)}
-        {page.ctaUrl && <div className="mt-10" style={{ textAlign: page.ctaAlign }}><a href={page.ctaUrl} className="inline-flex items-center gap-3 bg-[#5ba9d9] px-5 py-4 text-sm font-bold text-[#07192e] transition hover:bg-white hover:shadow-lg">{page.ctaLabel || "無料オンライン相談を予約する"}{page.ctaUrl.startsWith("http") ? <MoveUpRight size={17} /> : <ArrowRight size={17} />}</a></div>}
+        {cta.url && <div className="mt-10" style={{ textAlign: page.ctaAlign }}><a href={cta.url} className="inline-flex items-center gap-3 bg-[#5ba9d9] px-5 py-4 text-sm font-bold text-[#07192e] transition hover:bg-white hover:shadow-lg">{cta.label || "無料オンライン相談を予約する"}{cta.url.startsWith("http") ? <MoveUpRight size={17} /> : <ArrowRight size={17} />}</a></div>}
       </div>
     </div>
   </article><footer className="border-t border-slate-300 px-6 py-8"><div className="mx-auto flex max-w-6xl justify-between text-xs text-slate-500"><span>© 2026 EMULABO</span><a href="/">トップへ戻る</a></div></footer></main>;

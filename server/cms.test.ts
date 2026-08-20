@@ -30,6 +30,20 @@ describe("CMS content parsing", () => {
     expect(result.finalCta.align).toBe("left");
   });
 
+  it("adds the audience and resource defaults to CMS documents saved before the integrated-site feature", () => {
+    const result = parseCmsContent(JSON.stringify({
+      audiences: { corporate: { title: "法人向けの更新見出し" } },
+      resources: { personal: { url: "https://example.com/first-session" } },
+    }));
+
+    expect(result.audiences.corporate.title).toBe("法人向けの更新見出し");
+    expect(result.audiences.corporate.href).toBe(DEFAULT_SITE_CONTENT.audiences.corporate.href);
+    expect(result.audiences.personal.title).toBe(DEFAULT_SITE_CONTENT.audiences.personal.title);
+    expect(result.resources.corporate.url).toBe(DEFAULT_SITE_CONTENT.resources.corporate.url);
+    expect(result.resources.personal.url).toBe("https://example.com/first-session");
+    expect(result.resources.personal.label).toBe(DEFAULT_SITE_CONTENT.resources.personal.label);
+  });
+
   it("safely ignores malformed persisted JSON", () => {
     expect(parseCmsContent("not-json")).toEqual(DEFAULT_SITE_CONTENT);
   });
