@@ -10,7 +10,7 @@ export type CmsResource = { label: string; url: string };
 export type CmsContent = {
   contactUrl: string;
   hero: { eyebrow: string; title: string; description: string; emphasis: string; note: string; align: TextAlign };
-  assets: { heroImageUrl: string; profileImageUrl: string; caseImageUrl: string; consultationImageUrl: string; workshopImageUrl: string; operationsImageUrl: string };
+  assets: { heroImageUrl: string; profileImageUrl: string; profileImageAlt: string; caseImageUrl: string; caseImageAlt: string; consultationImageUrl: string; consultationImageAlt: string; workshopImageUrl: string; workshopImageAlt: string; operationsImageUrl: string; operationsImageAlt: string };
   audiences: { corporate: CmsAudience; personal: CmsAudience };
   resources: { corporate: CmsResource; personal: CmsResource };
   signals: CmsSignal[];
@@ -34,10 +34,15 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
   assets: {
     heroImageUrl: "/manus-storage/emulabo-hero-education-system_30d64fc5.jpg",
     profileImageUrl: "/manus-storage/emulabo-operations-brief_316f1942.jpg",
+    profileImageAlt: "教育運用の資料を整理する様子",
     caseImageUrl: "/manus-storage/emulabo-knowledge-structure_3d50d57d.jpg",
+    caseImageAlt: "教育の仕組みを象徴する構造的なオブジェクト",
     consultationImageUrl: "/manus-storage/emulabo-consultation-reference_ee3b7833.jpg",
+    consultationImageAlt: "相談者とコンサルタントが教育ロードマップを確認している様子",
     workshopImageUrl: "/manus-storage/emulabo-training-workshop-v2_c473faf8.jpg",
+    workshopImageAlt: "トレーナー向け研修を実施している様子",
     operationsImageUrl: "/manus-storage/emulabo-operations-team-v2_27fe7fc4.jpg",
+    operationsImageAlt: "チームが運用改善の次のアクションを確認している様子",
   },
   audiences: {
     corporate: {

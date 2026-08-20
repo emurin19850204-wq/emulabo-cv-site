@@ -44,6 +44,17 @@ describe("CMS content parsing", () => {
     expect(result.resources.personal.label).toBe(DEFAULT_SITE_CONTENT.resources.personal.label);
   });
 
+  it("adds image alternative-text defaults to CMS documents saved before image manager improvements", () => {
+    const result = parseCmsContent(JSON.stringify({
+      assets: { profileImageUrl: "https://example.com/profile.jpg", workshopImageAlt: "研修の様子" },
+    }));
+
+    expect(result.assets.profileImageUrl).toBe("https://example.com/profile.jpg");
+    expect(result.assets.profileImageAlt).toBe(DEFAULT_SITE_CONTENT.assets.profileImageAlt);
+    expect(result.assets.workshopImageAlt).toBe("研修の様子");
+    expect(result.assets.operationsImageAlt).toBe(DEFAULT_SITE_CONTENT.assets.operationsImageAlt);
+  });
+
   it("safely ignores malformed persisted JSON", () => {
     expect(parseCmsContent("not-json")).toEqual(DEFAULT_SITE_CONTENT);
   });

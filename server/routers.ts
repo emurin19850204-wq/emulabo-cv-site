@@ -5,7 +5,6 @@ import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { createBlogPost, createSiteLink, createSitePage, createVideo, deleteBlogPost, deleteSiteLink, deleteSitePage, deleteVideo, getBlogPostBySlug, getSiteContent, getSitePageBySlug, getVideoBySlug, listBlogPosts, listSiteLinks, listSitePages, listVideos, saveSiteContent, updateBlogPost, updateSiteLink, updateSitePage, updateVideo } from "./db";
 import { DEFAULT_SITE_CONTENT, parseCmsContent } from "../shared/cms";
 import { z } from "zod";
-import { storageCreatePresignedUpload } from "./storage";
 
 const pagePayload = z.object({
   slug: z.string().trim().regex(/^[a-z0-9-]+$/).min(2).max(120),
@@ -28,10 +27,6 @@ const videoPayload = z.object({ slug: z.string().trim().regex(/^[a-z0-9-]+$/).mi
 });
 
 const cmsContentInput = z.object({ contentJson: z.string().min(2).max(120_000) });
-const imageUploadInput = z.object({
-  filename: z.string().min(1).max(160),
-  contentType: z.enum(["image/jpeg", "image/png", "image/webp", "image/gif"]),
-});
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -59,10 +54,6 @@ export const appRouter = router({
       const content = parseCmsContent(input.contentJson);
       const saved = await saveSiteContent(JSON.stringify(content), ctx.user.id);
       return { content, updatedAt: saved?.updatedAt ?? null };
-    }),
-    createImageUpload: adminProcedure.input(imageUploadInput).mutation(({ input }) => {
-      const safeName = input.filename.replace(/[^a-zA-Z0-9._-]/g, "-");
-      return storageCreatePresignedUpload(`cms/images/${Date.now()}-${safeName}`);
     }),
   }),
   blog: router({
