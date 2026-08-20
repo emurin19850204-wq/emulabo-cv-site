@@ -1,6 +1,7 @@
 import { and, asc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, siteContents, siteLinks, sitePages, users } from "../drizzle/schema";
+import { InsertUser, blogPosts, siteContents, siteLinks, sitePages, users, videos } from "../drizzle/schema";
+import type { BlogPostPayload, VideoPayload } from "../shared/blogVideo";
 import type { SiteLinkPayload, SitePagePayload } from "../shared/sitePages";
 import { CMS_CONTENT_SLUG } from "../shared/cms";
 import { ENV } from './_core/env';
@@ -169,4 +170,84 @@ export async function deleteSiteLink(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database is not available");
   await db.delete(siteLinks).where(eq(siteLinks.id, id));
+}
+
+export async function listBlogPosts(publishedOnly = false) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(blogPosts).where(publishedOnly ? eq(blogPosts.isPublished, true) : undefined).orderBy(asc(blogPosts.sortOrder), asc(blogPosts.id));
+}
+
+export async function getBlogPostBySlug(slug: string, publishedOnly = false) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const whereClause = publishedOnly ? and(eq(blogPosts.slug, slug), eq(blogPosts.isPublished, true)) : eq(blogPosts.slug, slug);
+  const result = await db.select().from(blogPosts).where(whereClause).limit(1);
+  return result[0];
+}
+
+export async function createBlogPost(post: BlogPostPayload) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const existing = await getBlogPostBySlug(post.slug);
+  if (existing) throw new Error(`ブログのスラッグ「${post.slug}」は既に使用されています。別のスラッグを指定してください。`);
+  const result = await db.insert(blogPosts).values({ ...post, publishedAt: post.publishedAt ? new Date(post.publishedAt) : null });
+  const created = await db.select().from(blogPosts).where(eq(blogPosts.id, Number(result[0].insertId))).limit(1);
+  return created[0];
+}
+
+export async function updateBlogPost(id: number, post: BlogPostPayload) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const existing = await getBlogPostBySlug(post.slug);
+  if (existing && existing.id !== id) throw new Error(`ブログのスラッグ「${post.slug}」は既に使用されています。別のスラッグを指定してください。`);
+  await db.update(blogPosts).set({ ...post, publishedAt: post.publishedAt ? new Date(post.publishedAt) : null }).where(eq(blogPosts.id, id));
+  const updated = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+  return updated[0];
+}
+
+export async function deleteBlogPost(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.delete(blogPosts).where(eq(blogPosts.id, id));
+}
+
+export async function listVideos(publishedOnly = false) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(videos).where(publishedOnly ? eq(videos.isPublished, true) : undefined).orderBy(asc(videos.sortOrder), asc(videos.id));
+}
+
+export async function getVideoBySlug(slug: string, publishedOnly = false) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const whereClause = publishedOnly ? and(eq(videos.slug, slug), eq(videos.isPublished, true)) : eq(videos.slug, slug);
+  const result = await db.select().from(videos).where(whereClause).limit(1);
+  return result[0];
+}
+
+export async function createVideo(video: VideoPayload) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const existing = await getVideoBySlug(video.slug);
+  if (existing) throw new Error(`動画のスラッグ「${video.slug}」は既に使用されています。別のスラッグを指定してください。`);
+  const result = await db.insert(videos).values({ ...video, publishedAt: video.publishedAt ? new Date(video.publishedAt) : null });
+  const created = await db.select().from(videos).where(eq(videos.id, Number(result[0].insertId))).limit(1);
+  return created[0];
+}
+
+export async function updateVideo(id: number, video: VideoPayload) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  const existing = await getVideoBySlug(video.slug);
+  if (existing && existing.id !== id) throw new Error(`動画のスラッグ「${video.slug}」は既に使用されています。別のスラッグを指定してください。`);
+  await db.update(videos).set({ ...video, publishedAt: video.publishedAt ? new Date(video.publishedAt) : null }).where(eq(videos.id, id));
+  const updated = await db.select().from(videos).where(eq(videos.id, id)).limit(1);
+  return updated[0];
+}
+
+export async function deleteVideo(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database is not available");
+  await db.delete(videos).where(eq(videos.id, id));
 }

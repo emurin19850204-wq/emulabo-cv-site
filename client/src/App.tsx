@@ -5,6 +5,9 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Admin from "./pages/Admin";
+import BlogVideoManager from "./pages/BlogVideoManager";
+import Blog from "./pages/Blog";
+import Videos from "./pages/Videos";
 import ContentPage from "./pages/ContentPage";
 import Home from "./pages/Home";
 import SitePagesManager from "./pages/SitePagesManager";
@@ -15,6 +18,12 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/admin/pages"} component={SitePagesManager} />
+      <Route path={"/admin/blog"} component={() => <BlogVideoManager mode="blog" />} />
+      <Route path={"/admin/videos"} component={() => <BlogVideoManager mode="video" />} />
+      <Route path={"/blog"} component={() => <Blog />} />
+      <Route path={"/blog/:slug"} component={({ params }) => <Blog slug={params.slug} />} />
+      <Route path={"/videos"} component={() => <Videos />} />
+      <Route path={"/videos/:slug"} component={({ params }) => <Videos slug={params.slug} />} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/404"} component={NotFound} />
       <Route path={"/:slug"} component={ContentPage} />

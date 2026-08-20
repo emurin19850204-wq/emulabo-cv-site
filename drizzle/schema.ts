@@ -74,3 +74,40 @@ export const siteLinks = mysqlTable("site_links", {
 
 export type SitePage = typeof sitePages.$inferSelect;
 export type SiteLink = typeof siteLinks.$inferSelect;
+
+/** Published editorial articles managed by administrators. */
+export const blogPosts = mysqlTable("blog_posts", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 160 }).notNull().unique(),
+  title: varchar("title", { length: 240 }).notNull(),
+  excerpt: text("excerpt").notNull(),
+  body: text("body").notNull(),
+  coverImageUrl: text("coverImageUrl").notNull(),
+  coverImageAlt: varchar("coverImageAlt", { length: 240 }).notNull(),
+  author: varchar("author", { length: 160 }).notNull(),
+  isPublished: boolean("isPublished").default(false).notNull(),
+  publishedAt: timestamp("publishedAt"),
+  sortOrder: int("sortOrder").default(100).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+/** Videos can be external embeds or direct/storage URLs. */
+export const videos = mysqlTable("videos", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 160 }).notNull().unique(),
+  title: varchar("title", { length: 240 }).notNull(),
+  description: text("description").notNull(),
+  videoUrl: text("videoUrl").notNull(),
+  sourceType: mysqlEnum("sourceType", ["youtube", "vimeo", "direct", "storage"]).default("youtube").notNull(),
+  thumbnailUrl: text("thumbnailUrl").notNull(),
+  thumbnailAlt: varchar("thumbnailAlt", { length: 240 }).notNull(),
+  isPublished: boolean("isPublished").default(false).notNull(),
+  publishedAt: timestamp("publishedAt"),
+  sortOrder: int("sortOrder").default(100).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type Video = typeof videos.$inferSelect;

@@ -22,6 +22,13 @@
       "when": 1786790781666,
       "tag": "0002_brainy_killmonger",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1787184104145,
+      "tag": "0003_heavy_mister_sinister",
+      "breakpoints": true
     }
   ]
 }

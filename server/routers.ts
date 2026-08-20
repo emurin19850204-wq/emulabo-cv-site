@@ -2,7 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { createSiteLink, createSitePage, deleteSiteLink, deleteSitePage, getSiteContent, getSitePageBySlug, listSiteLinks, listSitePages, saveSiteContent, updateSiteLink, updateSitePage } from "./db";
+import { createBlogPost, createSiteLink, createSitePage, createVideo, deleteBlogPost, deleteSiteLink, deleteSitePage, deleteVideo, getBlogPostBySlug, getSiteContent, getSitePageBySlug, getVideoBySlug, listBlogPosts, listSiteLinks, listSitePages, listVideos, saveSiteContent, updateBlogPost, updateSiteLink, updateSitePage, updateVideo } from "./db";
 import { DEFAULT_SITE_CONTENT, parseCmsContent } from "../shared/cms";
 import { z } from "zod";
 import { storageCreatePresignedUpload } from "./storage";
@@ -12,6 +12,20 @@ const pagePayload = z.object({
   title: z.string().trim().min(1).max(220), eyebrow: z.string().max(120), summary: z.string().max(5_000), body: z.string().max(50_000), imageUrl: z.string().max(2_000), imageAlt: z.string().max(220), ctaLabel: z.string().max(120), ctaUrl: z.string().max(2_000), navLabel: z.string().max(120), headerAlign: z.enum(["left", "center", "right"]), bodyAlign: z.enum(["left", "center", "right"]), ctaAlign: z.enum(["left", "center", "right"]), showInNav: z.boolean(), isPublished: z.boolean(), sortOrder: z.number().int().min(0).max(10_000),
 });
 const linkPayload = z.object({ label: z.string().trim().min(1).max(120), url: z.string().trim().min(1).max(2_000), location: z.enum(["header", "footer"]), isExternal: z.boolean(), isVisible: z.boolean(), sortOrder: z.number().int().min(0).max(10_000) });
+const blogPostPayload = z.object({ slug: z.string().trim().regex(/^[a-z0-9-]+$/).min(2).max(160), title: z.string().trim().min(1).max(240), excerpt: z.string().max(10_000), body: z.string().max(100_000), coverImageUrl: z.string().max(2_000), coverImageAlt: z.string().max(240), author: z.string().max(160), isPublished: z.boolean(), publishedAt: z.string().datetime().nullable(), sortOrder: z.number().int().min(0).max(10_000) });
+const videoPayload = z.object({ slug: z.string().trim().regex(/^[a-z0-9-]+$/).min(2).max(160), title: z.string().trim().min(1).max(240), description: z.string().max(10_000), videoUrl: z.string().trim().min(1).max(2_000), sourceType: z.enum(["youtube", "vimeo", "direct", "storage"]), thumbnailUrl: z.string().max(2_000), thumbnailAlt: z.string().max(240), isPublished: z.boolean(), publishedAt: z.string().datetime().nullable(), sortOrder: z.number().int().min(0).max(10_000) }).superRefine((value, ctx) => {
+  if (value.sourceType === "storage" && !value.videoUrl.startsWith("/manus-storage/")) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["videoUrl"], message: "ストレージ動画は /manus-storage/ から始まるURLを指定してください" });
+  if (value.sourceType !== "storage") {
+    try {
+      const url = new URL(value.videoUrl);
+      if (url.protocol !== "https:") throw new Error("https required");
+      if (value.sourceType === "youtube" && !["youtube.com", "www.youtube.com", "youtu.be"].includes(url.hostname)) throw new Error("youtube host required");
+      if (value.sourceType === "vimeo" && !["vimeo.com", "www.vimeo.com"].includes(url.hostname)) throw new Error("vimeo host required");
+    } catch {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["videoUrl"], message: "HTTPSの許可された動画URLを指定してください" });
+    }
+  }
+});
 
 const cmsContentInput = z.object({ contentJson: z.string().min(2).max(120_000) });
 const imageUploadInput = z.object({
@@ -50,6 +64,22 @@ export const appRouter = router({
       const safeName = input.filename.replace(/[^a-zA-Z0-9._-]/g, "-");
       return storageCreatePresignedUpload(`cms/images/${Date.now()}-${safeName}`);
     }),
+  }),
+  blog: router({
+    publicList: publicProcedure.query(() => listBlogPosts(true)),
+    publicBySlug: publicProcedure.input(z.object({ slug: z.string().min(2).max(160) })).query(async ({ input }) => (await getBlogPostBySlug(input.slug, true)) ?? null),
+    adminList: adminProcedure.query(() => listBlogPosts()),
+    adminCreate: adminProcedure.input(blogPostPayload).mutation(({ input }) => createBlogPost(input)),
+    adminUpdate: adminProcedure.input(z.object({ id: z.number().int().positive(), post: blogPostPayload })).mutation(({ input }) => updateBlogPost(input.id, input.post)),
+    adminDelete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteBlogPost(input.id)),
+  }),
+  videos: router({
+    publicList: publicProcedure.query(() => listVideos(true)),
+    publicBySlug: publicProcedure.input(z.object({ slug: z.string().min(2).max(160) })).query(async ({ input }) => (await getVideoBySlug(input.slug, true)) ?? null),
+    adminList: adminProcedure.query(() => listVideos()),
+    adminCreate: adminProcedure.input(videoPayload).mutation(({ input }) => createVideo(input)),
+    adminUpdate: adminProcedure.input(z.object({ id: z.number().int().positive(), video: videoPayload })).mutation(({ input }) => updateVideo(input.id, input.video)),
+    adminDelete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(({ input }) => deleteVideo(input.id)),
   }),
   sitePages: router({
     publicNavigation: publicProcedure.query(async () => {
