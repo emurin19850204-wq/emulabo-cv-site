@@ -181,7 +181,7 @@
 
 ## HP編集とGitHub運用の整備
 
-- [ ] 管理者が `/admin`、`/admin/pages`、`/admin/blog`、`/admin/videos` からHPコンテンツを編集でき、一般訪問者が更新できないことを確認する。
-- [ ] このHP専用の非公開GitHubリポジトリを作成し、コード・Issue・Pull Requestを操作できる接続を設定する。
-- [ ] GitHubの最小権限範囲、ブランチ／PR運用、Secrets非表示、明示承認制の公開手順を運用資料へ記載する。
-- [ ] HP編集・GitHub接続の受入確認、テスト・ビルド、チェックポイント保存を完了する。
+- [x] 管理者が `/admin`、`/admin/pages`、`/admin/blog`、`/admin/videos` からHPコンテンツを編集でき、一般訪問者が更新できないことを確認する。
+- [x] このHP専用の非公開GitHubリポジトリを作成し、コード・Issue・Pull Requestを操作できる接続を設定する。
+- [x] GitHubの最小権限範囲、ブランチ／PR運用、Secrets非表示、明示承認制の公開手順を運用資料へ記載する。
+- [x] HP編集・GitHub接続の受入確認、テスト・ビルド、チェックポイント保存を完了する。
