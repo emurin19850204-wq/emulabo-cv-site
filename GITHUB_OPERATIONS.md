@@ -2,7 +2,7 @@
 
 ## 対象と目的
 
-このガイドは、EMULABO HPのコード、Issue、Pull RequestをGitHubで安全に扱うためのものです。対象は **`emurin19850204-wq/emulabo-cv-site`** のみです。HPの文章、画像、ページ、リンク、ブログ、動画などの通常更新は、原則としてCMS管理画面（`/admin`）から行います。GitHubは、デザイン・機能・CMSそのものの改修、障害修正、変更履歴のレビューに使用します。
+このガイドは、EMULABO HPのコード、Issue、Pull RequestをGitHubで安全に扱うためのものです。対象は **`emurin19850204-wq/emulabo-cv-site`** のみです。このリポジトリはPublicであり、コード・履歴・ドキュメントは誰でも閲覧できる。HPの文章、画像、ページ、リンク、ブログ、動画などの通常更新は、原則としてCMS管理画面（`/admin`）から行います。GitHubは、デザイン・機能・CMSそのものの改修、障害修正、変更履歴のレビューに使用します。
 
 ## 許可する操作
 
@@ -45,7 +45,7 @@ gh pr create --repo emurin19850204-wq/emulabo-cv-site --base main --title "fix: 
 
 ## Manusを使わずにGitHubでコードを編集する
 
-このHPのコードは、非公開リポジトリ [emurin19850204-wq/emulabo-cv-site](https://github.com/emurin19850204-wq/emulabo-cv-site) に出力されている。最初に、**`emurin19850204-wq` のGitHubアカウントでサインイン**してリポジトリを開く。未ログインの場合、非公開リポジトリは404として表示される。
+このHPのコードは、公開リポジトリ [emurin19850204-wq/emulabo-cv-site](https://github.com/emurin19850204-wq/emulabo-cv-site) に出力されている。閲覧・複製はサインインなしで行える。編集、Issue、Pull Requestの作成にはGitHubアカウントでサインインし、対象リポジトリに対する書き込み権限を持つ必要がある。
 
 | 方法 | 手順 | 向いている変更 |
 | --- | --- | --- |

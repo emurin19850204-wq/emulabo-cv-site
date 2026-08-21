@@ -4,7 +4,7 @@
 
 ## GitHubから編集する
 
-リポジトリは非公開です。GitHubで **`emurin19850204-wq`** のアカウントにサインインし、[emurin19850204-wq/emulabo-cv-site](https://github.com/emurin19850204-wq/emulabo-cv-site) を開いてください。未ログイン時に表示される404は、コードが消えたことを意味しません。
+リポジトリは公開されています。コードの閲覧・複製は、GitHubへのサインインなしで [emurin19850204-wq/emulabo-cv-site](https://github.com/emurin19850204-wq/emulabo-cv-site) から行えます。編集、Issue作成、Pull Request作成にはGitHubアカウントでのサインインと、必要な権限が必要です。
 
 ブラウザだけで小さなコード変更を行う場合は、対象ファイルを開いて鉛筆アイコンから編集し、作業ブランチまたはPull Requestとして保存します。複数ファイルを変更する場合はGitHub DesktopまたはVS Codeを使います。
 
