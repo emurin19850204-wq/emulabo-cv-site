@@ -88,7 +88,7 @@ export default function SitePagesManager() {
   if (loading) return <DashboardLayout><div className="p-8"><Loader2 className="animate-spin" /></div></DashboardLayout>;
   if (!isAdmin) return <DashboardLayout><div className="mx-auto max-w-xl py-20 text-center"><h1 className="text-2xl font-bold">管理者権限が必要です</h1><p className="mt-3 text-sm text-slate-600">ページ・リンクの編集はEMULABO管理者のみが実行できます。</p></div></DashboardLayout>;
 
-  return <DashboardLayout><div className={`mx-auto pb-20 ${isPreviewOpen && page?.id ? "max-w-[1720px] lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,470px)] lg:gap-6" : "max-w-6xl"}`}><main>
+  return <DashboardLayout><div className={`mx-auto pb-20 ${isPreviewOpen && page?.id ? "max-w-[1720px] xl:grid xl:grid-cols-[minmax(0,1fr)_minmax(360px,470px)] xl:gap-6" : "max-w-6xl"}`}><main>
     <header className="mb-8 border-b border-slate-200 pb-6"><a href="/admin" className="inline-flex items-center gap-1 text-sm font-bold text-sky-700"><ChevronLeft size={16} /> コンテンツ編集へ戻る</a><p className="mt-6 font-mono text-xs tracking-widest text-sky-700">EMULABO CMS / PAGES & LINKS</p><h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-950">追加ページとリンクを管理</h1><p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">ページを作成して公開し、ヘッダーまたはフッターに内部・外部リンクを掲載できます。公開をオフにしたページは外部から閲覧できません。</p></header>
     {notice && <div className="mb-6 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"><Check size={16} />{notice}</div>}
     <div className="grid gap-7 lg:grid-cols-[.75fr_1.25fr]">
