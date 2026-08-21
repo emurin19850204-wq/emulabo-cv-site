@@ -42,3 +42,17 @@ gh pr create --repo emurin19850204-wq/emulabo-cv-site --base main --title "fix: 
 ```
 
 > GitHubへ認証情報、個人情報、未公開の顧客情報、権利確認前の画像・動画を保存しないでください。
+
+## Manusを使わずにGitHubでコードを編集する
+
+このHPのコードは、非公開リポジトリ [emurin19850204-wq/emulabo-cv-site](https://github.com/emurin19850204-wq/emulabo-cv-site) に出力されている。最初に、**`emurin19850204-wq` のGitHubアカウントでサインイン**してリポジトリを開く。未ログインの場合、非公開リポジトリは404として表示される。
+
+| 方法 | 手順 | 向いている変更 |
+| --- | --- | --- |
+| GitHub Web | リポジトリで対象ファイルを開き、鉛筆アイコンから編集し、作業ブランチまたはPull Requestを作成する。 | 文言、スタイル、軽微なコード修正 |
+| GitHub Desktop | リポジトリをクローンし、エディタで変更後にコミット・プッシュする。 | 複数ファイル、画像UI、機能改修 |
+| VS Codeなど | クローンしたフォルダで `pnpm install`、`pnpm test`、`pnpm build` を実行してからPull Requestを作成する。 | テストを伴う本格的な改修 |
+
+コードの主な場所は、公開トップが `client/src/pages/Home.tsx`、トップCMSが `client/src/pages/Admin.tsx`、追加ページが `client/src/pages/SitePagesManager.tsx`、ブログ・動画CMSが `client/src/pages/BlogVideoManager.tsx`、写真変更UIが `client/src/components/ImageAssetField.tsx` である。
+
+> GitHubでのコード編集と、CMSに保存された文章・写真・ブログ・動画データの編集は別である。GitHubの変更は自動でCMSデータを書き換えず、GitHubへプッシュしただけでは現在のManusプレビューや公開サイトにも自動反映されない。GitHubを唯一の編集・公開場所にするには、外部ホスティングまたはGitHubからのデプロイ連携を別途設定する必要がある。
