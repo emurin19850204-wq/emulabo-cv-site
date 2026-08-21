@@ -14,6 +14,7 @@ export default function ContentPage() {
   const { data: page, isLoading } = trpc.sitePages.publicBySlug.useQuery({ slug: params.slug });
   const { data: siteContent } = trpc.siteContent.public.useQuery(undefined, { staleTime: 60_000 });
   const content = siteContent ?? DEFAULT_SITE_CONTENT;
+  const pageVisuals = content.visuals.filter(visual => visual.isPublished && visual.placement === `/${params.slug}` && visual.imageUrl).sort((a, b) => a.sortOrder - b.sortOrder);
   const isPersonalPage = params.slug === content.audiences.personal.href.replace(/^\//, "");
   const isCorporatePage = params.slug === content.audiences.corporate.href.replace(/^\//, "");
   const audience: CtaAudience = isPersonalPage ? "personal" : isCorporatePage ? "corporate" : "general";
@@ -43,6 +44,7 @@ export default function ContentPage() {
       <p className="font-mono text-xs tracking-[.16em] text-slate-500">EMULABO / INSIGHT</p>
       <div className="space-y-7 text-[15px] leading-8 text-slate-700" style={{ textAlign: page.bodyAlign }}>
         {page.body.split(/\n\s*\n/).map((paragraph, index) => <p className="whitespace-pre-line" key={`${paragraph}-${index}`}>{paragraph}</p>)}
+        {pageVisuals.length > 0 && <section className="space-y-5 border-y border-slate-300 py-8" aria-label="図表・インフォグラフィック">{pageVisuals.map(visual => <figure key={visual.id} className="overflow-hidden rounded-lg border border-slate-200 bg-white"><img src={visual.imageUrl} alt={visual.imageAlt || visual.title} className="w-full object-contain bg-slate-50" /><figcaption className="p-5"><p className="font-mono text-xs tracking-[.14em] text-sky-700">{visual.kind.toUpperCase()}</p><h2 className="mt-2 text-xl font-bold text-[#102845]">{visual.title}</h2>{visual.description && <p className="mt-2 text-sm leading-7 text-slate-600">{visual.description}</p>}</figcaption></figure>)}</section>}
         {decisionGuide && <aside className="mt-12 border-y border-slate-300 py-7 text-left"><p className="font-mono text-xs tracking-[.14em] text-sky-700">BEFORE YOU CONTACT</p><h2 className="mt-3 text-2xl font-bold tracking-[-.045em] text-[#102845]">{decisionGuide.title}</h2><ul className="mt-5 space-y-3 text-sm leading-7 text-slate-700">{decisionGuide.items.map(item => <li key={item} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500" />{item}</li>)}</ul><p className="mt-5 text-sm leading-7 text-slate-600">{decisionGuide.note}</p></aside>}
         {cta.url && <div className="mt-10" style={{ textAlign: page.ctaAlign }}><CtaLink href={cta.url} tracking={{ audience, action: isPersonalPage ? "trial" : "consultation", placement: `${params.slug}_page` }} className="inline-flex items-center gap-3 bg-[#5ba9d9] px-5 py-4 text-sm font-bold text-[#07192e] transition hover:bg-white hover:shadow-lg">{cta.label || "無料オンライン相談を予約する"}{cta.url.startsWith("http") ? <MoveUpRight size={17} /> : <ArrowRight size={17} />}</CtaLink></div>}
       </div>

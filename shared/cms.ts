@@ -6,6 +6,8 @@ export type CmsService = { number: string; title: string; lead: string; text: st
 export type CmsFaq = { question: string; answer: string };
 export type CmsAudience = { eyebrow: string; title: string; text: string; href: string; ctaLabel: string };
 export type CmsResource = { label: string; url: string };
+export type CmsVisualKind = "diagram" | "chart" | "comparison" | "infographic" | "other";
+export type CmsVisual = { id: string; title: string; description: string; imageUrl: string; imageAlt: string; kind: CmsVisualKind; placement: string; isPublished: boolean; sortOrder: number };
 
 export type CmsContent = {
   contactUrl: string;
@@ -18,6 +20,7 @@ export type CmsContent = {
   caseStudy: { title: string; challenge: string; action: string; outcome: string; scope: string };
   profile: { name: string; heading: string; quote: string; bio: string; credentials: string[] };
   faqs: CmsFaq[];
+  visuals: CmsVisual[];
   finalCta: { title: string; text: string; note: string; align: TextAlign };
 };
 
@@ -89,6 +92,7 @@ export const DEFAULT_SITE_CONTENT: CmsContent = {
     { question: "オンライン対応は可能ですか？", answer: "可能です。初回の無料相談はオンラインで実施します。" },
     { question: "相談したら契約する必要がありますか？", answer: "無料相談の時点で契約を前提とするものではありません。現状と方向性を整理する場としてご利用ください。" },
   ],
+  visuals: [],
   finalCta: { title: "「何から変えればいいか」\nから、一緒に整理します。", text: "育成、評価制度、現場運用、AI活用。問題が一つではないからこそ、最初から解決策を決める必要はありません。まず現在の状況を聞かせてください。", note: "オンライン30分｜相談無料", align: "left" },
 };
 
@@ -114,6 +118,7 @@ export function parseCmsContent(raw: string | null | undefined): CmsContent {
       caseStudy: { ...DEFAULT_SITE_CONTENT.caseStudy, ...candidate.caseStudy },
       profile: { ...DEFAULT_SITE_CONTENT.profile, ...candidate.profile },
       faqs: candidate.faqs?.length ? candidate.faqs : DEFAULT_SITE_CONTENT.faqs,
+      visuals: Array.isArray(candidate.visuals) ? candidate.visuals : DEFAULT_SITE_CONTENT.visuals,
       finalCta: { ...DEFAULT_SITE_CONTENT.finalCta, ...candidate.finalCta },
     };
   } catch {

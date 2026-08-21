@@ -11,6 +11,7 @@ import Videos from "./pages/Videos";
 import ContentPage from "./pages/ContentPage";
 import Home from "./pages/Home";
 import SitePagesManager from "./pages/SitePagesManager";
+import VisualsManager from "./pages/VisualsManager";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -20,6 +21,7 @@ function Router() {
       <Route path={"/admin/pages"} component={SitePagesManager} />
       <Route path={"/admin/blog"} component={() => <BlogVideoManager mode="blog" />} />
       <Route path={"/admin/videos"} component={() => <BlogVideoManager mode="video" />} />
+      <Route path={"/admin/visuals"} component={VisualsManager} />
       <Route path={"/blog"} component={() => <Blog />} />
       <Route path={"/blog/:slug"} component={({ params }) => <Blog slug={params.slug} />} />
       <Route path={"/videos"} component={() => <Videos />} />

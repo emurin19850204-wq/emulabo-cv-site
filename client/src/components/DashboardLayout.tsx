@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { FilePenLine, Files, Globe, LogOut, Newspaper, PanelLeft, Video } from "lucide-react";
+import { BarChart3, FilePenLine, Files, Globe, LogOut, Newspaper, PanelLeft, Video } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -32,6 +32,7 @@ const menuItems = [
   { icon: Files, label: "ページ・リンク管理", path: "/admin/pages" },
   { icon: Newspaper, label: "ブログ管理", path: "/admin/blog" },
   { icon: Video, label: "動画管理", path: "/admin/videos" },
+  { icon: BarChart3, label: "図表管理", path: "/admin/visuals" },
   { icon: Globe, label: "公開サイト", path: "/" },
 ];
 

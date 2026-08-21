@@ -55,6 +55,12 @@ describe("CMS content parsing", () => {
     expect(result.assets.operationsImageAlt).toBe(DEFAULT_SITE_CONTENT.assets.operationsImageAlt);
   });
 
+  it("keeps user-added visual blocks while safely defaulting sites saved before visual management", () => {
+    const visual = { id: "visual-1", title: "教育の流れ", description: "支援プロセスを示す図表", imageUrl: "/manus-storage/diagram.png", imageAlt: "教育設計から標準化までの流れを示す図表", kind: "diagram" as const, placement: "/", isPublished: true, sortOrder: 10 };
+    expect(parseCmsContent(JSON.stringify({ visuals: [visual] })).visuals).toEqual([visual]);
+    expect(parseCmsContent(JSON.stringify({ hero: { title: "既存サイト" } })).visuals).toEqual([]);
+  });
+
   it("safely ignores malformed persisted JSON", () => {
     expect(parseCmsContent("not-json")).toEqual(DEFAULT_SITE_CONTENT);
   });
